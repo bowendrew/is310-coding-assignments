@@ -1,0 +1,1 @@
+Esports games generate large amounts of data during competition. This can include wins, losses, rankings, accuracy, and other in-game statistics. This data can be used to understand how competitive gaming and esports have developed.
