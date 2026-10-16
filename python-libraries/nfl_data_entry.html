@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFL Team Data Entry</title>
+</head>
+<body>
+
+    <h1>NFL Team Data Entry</h1>
+    <p>Enter information about your favorite NFL teams.</p>
+
+    <h2>Add an NFL Team</h2>
+
+<form id="teamForm">
+    <label for="teamName">Team Name:</label>
+    <input type="text" id="teamName" required>
+
+    <label for="city">City:</label>
+    <input type="text" id="city" required>
+
+    <label for="superBowlWins">Super Bowl Wins:</label>
+    <input type="number" id="superBowlWins" min="0" required>
+
+    <button type="submit">Add Team</button>
+</form>
+<h2>Entered NFL Teams</h2>
+
+<p id="teamCount">Teams entered: 0</p>
+
+<ul id="teamList"></ul>
+<button type="button" id="downloadButton">Download NFL Teams</button>
+
+<script>
+    const teams = [];
+
+    const form = document.getElementById("teamForm");
+    const teamList = document.getElementById("teamList");
+    const teamCount = document.getElementById("teamCount");
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const teamName = document.getElementById("teamName").value;
+        const city = document.getElementById("city").value;
+        const superBowlWins = document.getElementById("superBowlWins").value;
+
+        const team = {
+            "Team Name": teamName,
+            "City": city,
+            "Super Bowl Wins": superBowlWins
+        };
+
+        teams.push(team);
+
+        const listItem = document.createElement("li");
+        listItem.textContent = `${teamName} - ${city} - ${superBowlWins} Super Bowl Wins`;
+
+        teamList.appendChild(listItem);
+
+        teamCount.textContent = `Teams entered: ${teams.length}`;
+
+        form.reset();
+    });
+    document.getElementById("downloadButton").addEventListener("click", function() {
+    if (teams.length === 0) {
+        alert("Please enter at least one NFL team before downloading.");
+        return;
+    }
+
+    const jsonData = JSON.stringify(teams, null, 4);
+    const blob = new Blob([jsonData], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "nfl_teams.json";
+    link.click();
+
+    URL.revokeObjectURL(url);
+});
+</script>
+</body>
+</html>
